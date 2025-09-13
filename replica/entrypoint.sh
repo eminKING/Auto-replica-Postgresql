@@ -2,10 +2,13 @@
 set -e
 
 DATA_DIR="/var/lib/postgresql/data"
+MASTER_HOST="pg_master"
+MASTER_USER="replica_user"
+MASTER_PASSWORD="replica_pass"
+
+export PGPASSWORD="$MASTER_PASSWORD"
 
 # Если data пустая — делаем базовый бэкап
 if [ -z "$(ls -A $DATA_DIR)" ]; then
-  
-  pg_basebackup -h pg_master -D $DATA_DIR -U replica_user -P -R
-  
+  pg_basebackup -h $MASTER_HOST -D $DATA_DIR -U $MASTER_USER -P -R --wal-method=stream
 fi
