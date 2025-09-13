@@ -10,8 +10,8 @@ services:
       - "5432:5432"
     volumes:
       - ./master/data:/var/lib/postgresql/data
-      - ./master/config/postgresql.conf:/etc/postgresql/postgresql.conf
-      - ./master/config/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ./master/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./master/pg_hba.conf:/etc/postgresql/pg_hba.conf
       - ./master/init-replica-user.sql:/docker-entrypoint-initdb.d/init-replica-user.sql
     command: [
       "postgres",
