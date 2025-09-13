@@ -9,10 +9,15 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./master/master-data:/var/lib/postgresql/data
-      - ./master/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./master/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./master/data:/var/lib/postgresql/data
+      - ./master/config/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./master/config/pg_hba.conf:/etc/postgresql/pg_hba.conf
       - ./master/init-replica-user.sql:/docker-entrypoint-initdb.d/init-replica-user.sql
+    command: [
+      "postgres",
+      "-c", "config_file=/etc/postgresql/postgresql.conf",
+      "-c", "hba_file=/etc/postgresql/pg_hba.conf"
+    ]
     restart: unless-stopped
 
   pg_replica:
@@ -28,8 +33,13 @@ services:
       - pg_master
     volumes:
       - ./replica/replica-data:/var/lib/postgresql/data
-      - ./replica/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./replica/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./replica/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./replica/pg_hba.conf:/etc/postgresql/pg_hba.conf
       - ./replica/entrypoint.sh:/entrypoint.sh
+    command: [
+      "postgres",
+      "-c", "config_file=/etc/postgresql/postgresql.conf",
+      "-c", "hba_file=/etc/postgresql/pg_hba.conf"
+    ]
     entrypoint: ["/bin/bash", "-c", "chmod +x /entrypoint.sh && /entrypoint.sh"]
     restart: unless-stopped
