@@ -12,6 +12,7 @@ services:
       - ./master/data:/var/lib/postgresql/data
       - ./master/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
       - ./master/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./master/init-replica-user.sql:/docker-entrypoint-initdb.d/init-replica-user.sql
     restart: unless-stopped
 
   pg_replica:
