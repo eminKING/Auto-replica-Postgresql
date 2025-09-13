@@ -1,1 +1,32 @@
+services:
+  pg_master:
+    image: postgres:15
+    container_name: pg_master
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./master/data:/var/lib/postgresql/data
+      - ./master/config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./master/config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+    restart: unless-stopped
 
+  pg_replica:
+    image: postgres:15
+    container_name: pg_replica
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db
+    ports:
+      - "5433:5432"
+    depends_on:
+      - pg_master
+    volumes:
+      - ./replica/data:/var/lib/postgresql/data
+      - ./replica/config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./replica/config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+    restart: unless-stopped
