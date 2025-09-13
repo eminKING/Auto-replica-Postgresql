@@ -10,8 +10,8 @@ services:
       - "5432:5432"
     volumes:
       - ./master/data:/var/lib/postgresql/data
-      - ./master/config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./master/config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./master/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./master/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     restart: unless-stopped
 
   pg_replica:
@@ -27,6 +27,6 @@ services:
       - pg_master
     volumes:
       - ./replica/data:/var/lib/postgresql/data
-      - ./replica/config/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./replica/config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./replica/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./replica/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     restart: unless-stopped
