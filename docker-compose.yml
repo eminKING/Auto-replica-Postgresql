@@ -30,5 +30,5 @@ services:
       - ./replica/data:/var/lib/postgresql/data
       - ./replica/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
       - ./replica/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-    entrypoint: ["/entrypoint.sh"]
+    entrypoint: ["/bin/bash", "-c", "chmod +x /entrypoint.sh && /entrypoint.sh"]
     restart: unless-stopped
