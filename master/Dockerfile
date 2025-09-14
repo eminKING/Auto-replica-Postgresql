@@ -4,8 +4,7 @@ COPY postgresql.conf /etc/postgresql/postgresql.conf
 COPY pg_hba.conf /etc/postgresql/pg_hba.conf
 COPY init-replica-user.sql /docker-entrypoint-initdb.d/
 
-RUN chown -R postgres:postgres /etc/postgresql \
-    && chmod 600 /etc/postgresql/*.conf
+RUN chown -R postgres:postgres /etc/postgresql 
 
 USER postgres
 
