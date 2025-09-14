@@ -8,6 +8,11 @@ MASTER_PASSWORD="replica_pass"
 
 export PGPASSWORD="$MASTER_PASSWORD"
 
+# Если скрипт запущен от root — переключаемся на postgres
+if [ "$(id -u)" = '0' ]; then
+    exec gosu postgres "$0" "$@"
+fi
+
 # Ждём, пока мастер станет доступен
 until pg_isready -h $MASTER_HOST -p 5432 -U $MASTER_USER; do
     echo "Waiting for master to start..."
