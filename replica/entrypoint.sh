@@ -18,3 +18,6 @@ done
 if [ -z "$(ls -A $DATA_DIR)" ]; then
   pg_basebackup -h $MASTER_HOST -D $DATA_DIR -U $MASTER_USER -P -R --wal-method=stream
 fi
+
+# Запускаем PostgreSQL
+exec postgres
