@@ -1,6 +1,6 @@
 services:
   pg_master:
-    image: ./master
+    build: ./master
     container_name: pg_master
     environment:
       POSTGRES_USER: postgres
@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 
   pg_replica:
-    image: ./replica
+    build: ./replica
     container_name: pg_replica
     environment:
       POSTGRES_USER: postgres
