@@ -23,7 +23,6 @@ services:
   pg_replica:
     image: postgres:15
     container_name: pg_replica
-    user: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
