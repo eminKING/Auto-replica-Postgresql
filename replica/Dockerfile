@@ -2,7 +2,7 @@ FROM postgres:15
 
 COPY postgresql.conf /etc/postgresql/postgresql.conf
 COPY pg_hba.conf /etc/postgresql/pg_hba.conf
-COPY replica-entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh && chown -R postgres:postgres /etc/postgresql
 
