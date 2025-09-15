@@ -5,13 +5,12 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: db
+      POSTGRES_DB: test_db
     volumes:
-      - ./master/data:/var/lib/postgresql/data
+      - ./master/master-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    restart: unless-stopped
-
+      
   pg_replica_init:
     image: postgres:15
     container_name: pg_replica_init
@@ -19,17 +18,16 @@ services:
       - pg_master
     environment:
       PGPASSWORD: replica_pass
-    volumes:
-      - ./replica/data:/var/lib/postgresql/data
     entrypoint: >
-      bash -c "
-      until pg_isready -h pg_master -p 5432; do
+      sh -c "
         echo 'Waiting for master...';
-        sleep 1;
-      done;
-      rm -rf /var/lib/postgresql/data/*;
-      pg_basebackup -h pg_master -D /var/lib/postgresql/data -U replica_user -v -P --wal-method=stream;
+        until pg_isready -h pg_master -p 5432 -U postgres; do sleep 1; done;
+        echo 'Starting basebackup...';
+        pg_basebackup -h pg_master -D /var/lib/postgresql/data -U replica_user -Fp -Xs -P -R;
       "
+    volumes:
+      - ./replica/replica-data:/var/lib/postgresql/data
+    restart: "no"
 
   pg_replica:
     build: ./replica
@@ -38,11 +36,10 @@ services:
       - pg_master
       - pg_replica_init
     environment:
-      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: db
     volumes:
-      - ./replica/data:/var/lib/postgresql/data
+      - ./replica/replica-data:/var/lib/postgresql/data
+    networks:
+      - pg_net
     ports:
       - "5433:5432"
-    restart: unless-stopped
