@@ -27,7 +27,7 @@ services:
       - pg_master
     volumes:
       - replica_data:/var/lib/postgresql/data
-    user: 999:999
+    user: "999:999"
     restart: unless-stopped
 
 volumes:
