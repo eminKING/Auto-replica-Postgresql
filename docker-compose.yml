@@ -37,7 +37,9 @@ services:
       - pg_master
       - pg_replica_init
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test_db
     volumes:
       - ./replica/replica-data:/var/lib/postgresql/data
     ports:
