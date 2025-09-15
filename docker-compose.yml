@@ -2,25 +2,49 @@ version: '3.9'
 
 services:
   pg_master:
-    build: ./master
+    image: ./master
     container_name: pg_master
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: db
+    volumes:
+      - ./master/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: unless-stopped
 
+  pg_replica_init:
+    image: postgres:15
+    container_name: pg_replica_init
+    depends_on:
+      - pg_master
+    environment:
+      PGPASSWORD: replica_pass
+    volumes:
+      - ./replica/data:/var/lib/postgresql/data
+    entrypoint: >
+      bash -c "
+      until pg_isready -h pg_master -p 5432; do
+        echo 'Waiting for master...';
+        sleep 1;
+      done;
+      rm -rf /var/lib/postgresql/data/*;
+      pg_basebackup -h pg_master -D /var/lib/postgresql/data -U replica_user -v -P --wal-method=stream;
+      "
+
   pg_replica:
-    build: ./replica
+    image: ./replica
     container_name: pg_replica
+    depends_on:
+      - pg_master
+      - pg_replica_init
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: db
+    volumes:
+      - ./replica/data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
-    depends_on:
-      - pg_master
     restart: unless-stopped
