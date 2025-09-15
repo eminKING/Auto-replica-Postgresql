@@ -10,7 +10,8 @@ services:
       - ./master/master-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-      
+    restart: unless-stopped
+    
   pg_replica_init:
     image: postgres:15
     container_name: pg_replica_init
@@ -39,7 +40,6 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./replica/replica-data:/var/lib/postgresql/data
-    networks:
-      - pg_net
     ports:
       - "5433:5432"
+    restart: unless-stopped
