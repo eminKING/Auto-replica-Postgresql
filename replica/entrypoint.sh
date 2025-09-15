@@ -16,6 +16,8 @@ done
 
 # Если data пустая — делаем базовый бэкап
 if [ -z "$(ls -A $DATA_DIR)" ]; then
+  chmod 700 $DATA_DIR
+  chown -R postgres:postgres $DATA_DIR
   pg_basebackup -h $MASTER_HOST -D $DATA_DIR -U $MASTER_USER -P -R --wal-method=stream
 fi
 
