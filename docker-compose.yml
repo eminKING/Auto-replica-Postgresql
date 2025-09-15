@@ -43,3 +43,7 @@ services:
     ports:
       - "5433:5432"
     restart: unless-stopped
+
+volumes:
+  master-data:
+  replica-data:
