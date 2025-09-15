@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: test_db
+      POSTGRES_DB: db
     volumes:
       - ./master/master-data:/var/lib/postgresql/data
     ports:
@@ -22,6 +22,7 @@ services:
     entrypoint: >
       sh -c "
         echo 'Waiting for master...';
+        rm -rf /var/lib/postgresql/data/*
         until pg_isready -h pg_master -p 5432 -U postgres; do sleep 1; done;
         echo 'Starting basebackup...';
         pg_basebackup -h pg_master -D /var/lib/postgresql/data -U replica_user -Fp -Xs -P -R;
