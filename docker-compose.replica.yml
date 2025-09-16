@@ -1,0 +1,31 @@
+services:
+  pg_replica_init:
+    image: postgres:15
+    container_name: pg_replica_init
+    environment:
+      PGPASSWORD: replica_pass
+    entrypoint: >
+      sh -c "
+        echo 'Waiting for master...';
+        rm -rf /var/lib/postgresql/data/*
+        until pg_isready -h MASTER_IP -p 5432 -U postgres; do sleep 1; done;
+        echo 'Starting basebackup...';
+        pg_basebackup -h MASTER_IP -D /var/lib/postgresql/data -U replica_user -Fp -Xs -P -R;
+      "
+    volumes:
+      - ./replica/replica-data:/var/lib/postgresql/data
+    restart: no
+
+  pg_replica:
+    build: ./replica
+    container_name: pg_replica
+    depends_on:
+      - pg_replica_init
+    volumes:
+      - ./replica/replica-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+
+  volumes:
+  replica-data:
