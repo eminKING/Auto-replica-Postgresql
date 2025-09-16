@@ -28,4 +28,4 @@ services:
     restart: unless-stopped
 
   volumes:
-  replica-data:
+    replica-data:
