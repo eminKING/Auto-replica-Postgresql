@@ -29,7 +29,7 @@ services:
       "
     volumes:
       - ./replica/replica-data:/var/lib/postgresql/data
-    restart: "no"
+    restart: no
 
   pg_replica:
     build: ./replica
@@ -37,8 +37,6 @@ services:
     depends_on:
       - pg_master
       - pg_replica_init
-    environment:
-      POSTGRES_PASSWORD: postgres
     volumes:
       - ./replica/replica-data:/var/lib/postgresql/data
     ports:
