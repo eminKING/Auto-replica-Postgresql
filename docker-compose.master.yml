@@ -7,10 +7,10 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: db
     volumes:
-      - ./master/master-data:/var/lib/postgresql/data
+      - master-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: unless-stopped
-    
-  volumes:
-    master-data:
+
+volumes:
+  master-data:
