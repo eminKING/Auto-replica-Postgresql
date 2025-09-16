@@ -27,5 +27,5 @@ services:
       - "5433:5432"
     restart: unless-stopped
 
-  volumes:
-    replica-data:
+volumes:
+  replica-data:
