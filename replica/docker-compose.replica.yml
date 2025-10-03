@@ -17,7 +17,7 @@ services:
     restart: no
 
   pg_replica:
-    build: ./replica
+    build: .
     container_name: pg_replica
     depends_on:
       - pg_replica_init
