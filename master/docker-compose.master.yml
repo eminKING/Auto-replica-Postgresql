@@ -1,6 +1,6 @@
 services:
   pg_master:
-    build: ./master
+    build: .
     container_name: pg_master
     environment:
       POSTGRES_USER: postgres
