@@ -53,8 +53,8 @@ docker run hello-world
 Clone the repository and navigate to the project folder:
 
 ```bash
-git clone https://github.com/<your_username>/postgresql-auto-replication.git
-cd postgresql-auto-replication
+git clone https://github.com/eminKING/Auto-replica-Postgresql.git
+cd Auto-replica-Postgresql
 ```
 
 ### 3️⃣ Decide the Role
@@ -68,7 +68,7 @@ Determine the server's role:
 
 For the Replica node, you *must* replace `MASTER_IP` with the Master's actual IP address.
 
-**File path:** `postgresql-auto-replication/replica/docker-compose.replica.yml`
+**File path:** `Auto-replica-Postgresql/replica/docker-compose.replica.yml`
 
 **Example (Configuration Snippet):**
 
@@ -109,13 +109,13 @@ volumes:
 * **Master:**
 
     ```bash
-    cd postgresql-auto-replication 
+    cd Auto-replica-Postgresql/master
     ```
 
 * **Replica:**
 
     ```bash
-    cd postgresql-auto-replication/replica 
+    cd Auto-replica-Postgresql/replica 
     ```
 
 ### 6️⃣ Start Container with Build
