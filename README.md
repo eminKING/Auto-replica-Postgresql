@@ -19,12 +19,33 @@ Before starting, the user must select the server role (**Master** or **Replica**
 
 ## ⚙️ Setup Steps
 
-### 1️⃣ Install Docker
+### 1️⃣ Install Docker 
 
-Ensure Docker is installed:
+Use the official repository method to install Docker Engine for better stability and integration (recommended for production on Ubuntu/Debian OR... just use 'sudo snap install docker' ._.):
 
 ```bash
-sudo snap install docker
+# 1. Update packages and install dependencies
+sudo apt update
+sudo apt install ca-certificates curl gnupg lsb-release -y
+
+# 2. Add Docker's official GPG key
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+# 3. Add the Docker repository to APT sources
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# 4. Install Docker Engine and related tools (including Compose plugin)
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+
+# 5. Add current user to the 'docker' group to run commands without sudo (requires re-login)
+sudo usermod -aG docker $USER
+
+# 6. Verify installation
+docker run hello-world
 ```
 
 ### 2️⃣ Clone the Project
@@ -32,7 +53,7 @@ sudo snap install docker
 Clone the repository and navigate to the project folder:
 
 ```bash
-git clone [https://github.com/](https://github.com/)<your_username>/postgresql-auto-replication.git
+git clone https://github.com/<your_username>/postgresql-auto-replication.git
 cd postgresql-auto-replication
 ```
 
