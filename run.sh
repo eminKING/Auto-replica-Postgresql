@@ -17,7 +17,7 @@ elif [ "$choice" == "2" ]; then
     read -p "Enter master IP address: " master_ip
 
     # Replace text MASTER_IP_PLACEHOLDER with user IP in config file
-    sed -i "s/MASTER_IP_PLACEHOLDER/$master_ip/g" replica-config.conf
+    sed -i "s/MASTER_IP/$master_ip/g" replica/docker-compose.replica.yml
 
     echo "Starting replica..."
     docker-compose -f docker-compose.replica.yml up -d
