@@ -143,6 +143,3 @@ Reset volumes if needed (start with a clean slate):
 
 ```bash
 docker volume prune
------
-
-Надеюсь, это именно тот формат, который вы искали\!
