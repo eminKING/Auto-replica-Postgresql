@@ -1,13 +1,13 @@
-🐘 PostgreSQL Automatic Replication — README
+🐘 PostgreSQL Automatic Replication
 📘 Description
 
 This project sets up PostgreSQL master–replica replication using Docker Compose with custom Docker images.
 
 Node	Description
-Master	Main database node
-Replica	Secondary node copying data from Master
+✅ Master	Main database node
+⚡ Replica	Secondary node replicating data from master
 
-Before starting, the user must choose the role of the server (Master or Replica). You can also change default passwords in the configuration.
+Before starting, choose the role of the server. You can also change default passwords in the configuration.
 
 ⚙️ Setup Steps
 1️⃣ Install Docker
@@ -31,7 +31,7 @@ File path:
 
 postgresql-auto-replication/replica/docker-compose.replica.yml
 
-Example:
+Example configuration:
 services:
   pg_replica_init:
     image: postgres:15
@@ -65,16 +65,9 @@ volumes:
   replica-data:
 
 5️⃣ Navigate to the correct directory
-
-Master:
-
-cd postgresql-auto-replication
-
-
-Replica:
-
-cd postgresql-auto-replication/replica
-
+Role	Directory
+Master	cd postgresql-auto-replication
+Replica	cd postgresql-auto-replication/replica
 6️⃣ Start container with build
 
 Master:
@@ -88,9 +81,6 @@ docker-compose -f docker-compose.replica.yml up -d --build
 
 7️⃣ Verify replication
 docker-compose -f docker-compose.replica.yml logs -f
-
-
-Check that the replica connects to the master.
 
 🔧 Notes & Tips
 
