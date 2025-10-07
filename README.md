@@ -1,20 +1,31 @@
-# 🐘 PostgreSQL Automatic Replication
+YAML
 
-**Description**  
-This project demonstrates **PostgreSQL master–replica replication** using **Docker Compose** with custom Docker images.
-
-| Role       | Description                                 |
-|-----------:|---------------------------------------------|
-| ✅ **Master**  | Main (primary) PostgreSQL server            |
-| ⚡ **Replica** | Secondary server that copies data from Master |
-
-> **Important:** choose the role of the server you are configuring (Master or Replica).  
-> The user must manually replace `MASTER_IP` in replica config files with the master's IP. You can also change *default passwords* in compose files.
-
----
-
-## Prerequisites
-
-- Docker installed on each host. Example (Linux, snap):
-```bash
-sudo snap install docker
+services:
+  pg_replica_init:
+    image: postgres:15
+    container_name: pg_replica_init
+    environment:
+      PGPASSWORD: replica_pass
+    entrypoint: >
+      sh -c "
+        echo 'Waiting for master...';
+        rm -rf /var/lib/postgresql/data/*
+        until pg_isready -h 10.1.1.1 -p 5432 -U postgres; do sleep 1; done; 
+        echo 'Starting basebackup...';
+        pg_basebackup -h 10.1.1.1 -D /var/lib/postgresql/data -U replica_user -Fp -Xs -P -R;
+      "
+    volumes:
+      - ./replica/replica-data:/var/lib/postgresql/data
+    restart: no
+  pg_replica:
+    build: .
+    container_name: pg_replica
+    depends_on:
+      - pg_replica_init
+    volumes:
+      - ./replica/replica-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+volumes:
+  replica-data:
