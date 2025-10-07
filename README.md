@@ -32,7 +32,7 @@ File path:
 postgresql-auto-replication/replica/docker-compose.replica.yml
 
 Example configuration:
-services:
+"""services:
   pg_replica_init:
     image: postgres:15
     container_name: pg_replica_init
@@ -62,7 +62,7 @@ services:
     restart: unless-stopped
 
 volumes:
-  replica-data:
+  replica-data:"""
 
 5️⃣ Navigate to the correct directory
 Role	Directory
